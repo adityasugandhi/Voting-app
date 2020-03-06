@@ -28,7 +28,8 @@ post '/cast' do
       else
         @store['votes'][@vote] += 1
       end
-      
+      counter+=1
+     
     end
   end
   
