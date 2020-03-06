@@ -10,17 +10,28 @@ Choices = {
   'PIZ' => 'Pizza',
   'CUR' => 'Curry',
   'NOO' => 'Noodles',
+  'BRI' => 'Briyani',
   }
 
 post '/cast' do
   @title = 'Thanks for casting your vote!'
   @vote  = params['vote']
+  
   @store = YAML::Store.new 'votes.yml'
-  @store.transaction do
-    @store['votes'] ||= {}
-    @store['votes'][@vote] ||= 0
-    @store['votes'][@vote] += 1
+  if @vote == 'BRI'
+    @store.transaction do
+      @store['votes'] ||= {}
+      @store['votes'][@vote] ||= 0
+      if @store['votes'][@vote] % 2 ==0
+        @store['votes'][@vote] += -1
+        
+      else
+        @store['votes'][@vote] += 1
+      end
+      
+    end
   end
+  
   erb :cast
 end
 
